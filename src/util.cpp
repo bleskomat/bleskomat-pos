@@ -68,10 +68,8 @@ namespace {
 namespace util {
 
 	std::string generateRandomPin() {
-		std::string pin = std::to_string(random(9999));
-		while (pin.size() < 4) {
-			pin = "0" + pin;
-		}
+		// To maintain compatibility with LNPoS/LNURLPoS, use a range of 1000-9999:
+		std::string pin = std::to_string(random(1000, 9999));
 		return pin;
 	}
 

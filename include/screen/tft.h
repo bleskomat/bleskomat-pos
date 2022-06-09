@@ -37,6 +37,7 @@ namespace screen_tft {
 	void showEnterAmountScreen(const double &amount);
 	void showPaymentQRCodeScreen(const std::string &qrcodeData);
 	void showPaymentPinScreen(const std::string &pin);
+	void adjustContrast(const int &percentChange);
 }
 
 #endif

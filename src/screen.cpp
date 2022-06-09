@@ -37,4 +37,8 @@ namespace screen {
 		screen_tft::showPaymentPinScreen(pin);
 		currentScreen = "paymentPin";
 	}
+
+	void adjustContrast(const int &percentChange) {
+		screen_tft::adjustContrast(percentChange);
+	}
 }

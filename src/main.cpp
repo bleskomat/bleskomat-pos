@@ -94,6 +94,10 @@ void runAppLoop() {
 	} else if (currentScreen == "paymentQRCode") {
 		if (keyPressed == "#") {
 			screen::showPaymentPinScreen(pin);
+		} else if (keyPressed == "1") {
+			screen::adjustContrast(-10);// decrease contrast
+		} else if (keyPressed == "4") {
+			screen::adjustContrast(10);// increase contrast
 		}
 	} else if (currentScreen == "paymentPin") {
 		if (keyPressed == "*") {

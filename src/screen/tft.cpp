@@ -3,10 +3,13 @@
 namespace {
 
 	TFT_eSPI tft = TFT_eSPI();
-	const auto bgColor = TFT_BLACK;
-	const auto textColor = TFT_WHITE;
+	const uint16_t bgColor = TFT_BLACK;
+	const int minContrastPercent = 10;
+	int currentContrastPercent = 100;
+	uint16_t textColor = TFT_WHITE;
 	int16_t center_x;
 	int16_t center_y;
+	std::string currentPaymentQRCodeData;
 
 	typedef std::vector<GFXfont> FontList;
 
@@ -160,8 +163,21 @@ namespace {
 		return bbox;
 	}
 
-	void clearScreen() {
+	void clearScreen(const bool &reset = true) {
 		tft.fillScreen(bgColor);
+		if (reset && currentPaymentQRCodeData != "") {
+			currentPaymentQRCodeData = "";
+		}
+	}
+
+	void setContrastLevel(const int &percent) {
+		currentContrastPercent = percent;
+		const int value = std::ceil((percent * 255) / 100);
+		textColor = tft.color565(value, value, value);
+		logger::write("Set contrast level to " + std::to_string(percent) + " %");
+		if (currentPaymentQRCodeData != "") {
+			screen_tft::showPaymentQRCodeScreen(currentPaymentQRCodeData);
+		}
 	}
 }
 
@@ -176,6 +192,7 @@ namespace screen_tft {
 		center_x = tft.width() / 2;
 		center_y = tft.height() / 2;
 		clearScreen();
+		setContrastLevel(60);
 	}
 
 	void showHomeScreen() {
@@ -205,10 +222,11 @@ namespace screen_tft {
 	}
 
 	void showPaymentQRCodeScreen(const std::string &qrcodeData) {
-		clearScreen();
+		clearScreen(false);
 		const int16_t qr_max_w = tft.width();
 		const int16_t qr_max_h = tft.height();
 		renderQRCode(qrcodeData, center_x, center_y, qr_max_w, qr_max_h);
+		currentPaymentQRCodeData = qrcodeData;
 	}
 
 	void showPaymentPinScreen(const std::string &pin) {
@@ -219,5 +237,12 @@ namespace screen_tft {
 		renderText(instructionText1, Courier_Prime_Code12pt7b, center_x, 18);
 		const std::string instructionText2 = i18n::t("payment_pin_instruction2");
 		renderText(instructionText2, Courier_Prime_Code10pt7b, 0, tft.height(), BL_DATUM);
+	}
+
+	void adjustContrast(const int &percentChange) {
+		const int newContrastPercent = std::max(minContrastPercent, std::min(100, currentContrastPercent + percentChange));
+		if (newContrastPercent != currentContrastPercent) {
+			setContrastLevel(newContrastPercent);
+		}
 	}
 }
