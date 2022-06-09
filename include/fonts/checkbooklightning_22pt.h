@@ -1,7 +1,7 @@
-#ifndef BLESKOMAT_FONTS_CHECKBOOK_22PT_H
-#define BLESKOMAT_FONTS_CHECKBOOK_22PT_H
+#ifndef BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_22PT_H
+#define BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_22PT_H
 
-const uint8_t Checkbook22pt7bBitmaps[] PROGMEM = {
+const uint8_t CheckbookLightning22pt7bBitmaps[] PROGMEM = {
   0x3C, 0x3F, 0xBF, 0xDF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xDF,
   0xCF, 0xE7, 0xF3, 0xF9, 0xFC, 0xFE, 0x3E, 0x1F, 0x0F, 0x87, 0xC3, 0xE1,
   0xE0, 0xF0, 0x38, 0x1C, 0x0E, 0x07, 0x00, 0x00, 0x03, 0xFD, 0xFE, 0xFF,
@@ -573,7 +573,7 @@ const uint8_t Checkbook22pt7bBitmaps[] PROGMEM = {
   0x00, 0x00, 0x60, 0x00, 0x01, 0x80, 0x00, 0x06, 0x00, 0x00, 0x1F, 0xFF,
   0xFF, 0xC0 };
 
-const GFXglyph Checkbook22pt7bGlyphs[] PROGMEM = {
+const GFXglyph CheckbookLightning22pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,  14,    0,    1 },   // 0x20 ' '
   {     0,   9,  37,  11,    1,  -36 },   // 0x21 '!'
   {    42,  22,  27,  32,    5,  -26 },   // 0x22 '"'
@@ -670,9 +670,9 @@ const GFXglyph Checkbook22pt7bGlyphs[] PROGMEM = {
   {  6680,  22,  27,  32,    5,  -26 },   // 0x7D '}'
   {  6755,  22,  27,  32,    5,  -26 } }; // 0x7E '~'
 
-const GFXfont Checkbook22pt7b PROGMEM = {
-  (uint8_t  *)Checkbook22pt7bBitmaps,
-  (GFXglyph *)Checkbook22pt7bGlyphs,
+const GFXfont CheckbookLightning22pt7b PROGMEM = {
+  (uint8_t  *)CheckbookLightning22pt7bBitmaps,
+  (GFXglyph *)CheckbookLightning22pt7bGlyphs,
   0x20, 0x7E, 43 };
 
 // Approx. 7502 bytes

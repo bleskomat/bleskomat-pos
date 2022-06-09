@@ -28,12 +28,12 @@ namespace {
 
 	FontList brandFonts = {
 		// Ordered from largest (top) to smallest (bottom).
-		Checkbook22pt7b,
-		Checkbook20pt7b,
-		Checkbook18pt7b,
-		Checkbook16pt7b,
-		Checkbook14pt7b,
-		Checkbook12pt7b
+		CheckbookLightning22pt7b,
+		CheckbookLightning20pt7b,
+		CheckbookLightning18pt7b,
+		CheckbookLightning16pt7b,
+		CheckbookLightning14pt7b,
+		CheckbookLightning12pt7b
 	};
 
 	struct BoundingBox {

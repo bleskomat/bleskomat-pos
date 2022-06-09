@@ -71,12 +71,12 @@ make fontconvert
 ```
 Then to generate a new font header file for your own .ttf font:
 ```bash
-./tools/Adafruit-GFX-Library/fontconvert ./assets/fonts/Checkbook/Checkbook.ttf 30 > ./include/fonts/checkbook_30pt.h
+./tools/Adafruit-GFX-Library/fontconvert ./assets/fonts/CheckbookLightning/CheckbookLightning.ttf 30 > ./include/fonts/checkbooklightning_30pt.h
 ```
 Don't forget to add header guards to the new file - e.g.:
 ```c
-#ifndef BLESKOMAT_FONTS_CHECKBOOK_30PT_H
-#define BLESKOMAT_FONTS_CHECKBOOK_30PT_H
+#ifndef BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_30PT_H
+#define BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_30PT_H
 
 // ...
 
@@ -85,7 +85,7 @@ Don't forget to add header guards to the new file - e.g.:
 Then include the new font header file near the others in the `./include/screen/tft.h` file:
 ```c
 // ...
-#include "fonts/checkbook_30pt.h"
+#include "fonts/checkbooklightning_30pt.h"
 // ...
 ```
 

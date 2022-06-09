@@ -15,12 +15,12 @@
 #include <string>
 #include <vector>
 
-#include "fonts/checkbook_12pt.h"
-#include "fonts/checkbook_14pt.h"
-#include "fonts/checkbook_16pt.h"
-#include "fonts/checkbook_18pt.h"
-#include "fonts/checkbook_20pt.h"
-#include "fonts/checkbook_22pt.h"
+#include "fonts/checkbooklightning_12pt.h"
+#include "fonts/checkbooklightning_14pt.h"
+#include "fonts/checkbooklightning_16pt.h"
+#include "fonts/checkbooklightning_18pt.h"
+#include "fonts/checkbooklightning_20pt.h"
+#include "fonts/checkbooklightning_22pt.h"
 #include "fonts/courier_prime_code_10pt.h"
 #include "fonts/courier_prime_code_12pt.h"
 #include "fonts/courier_prime_code_14pt.h"

@@ -1,7 +1,7 @@
-#ifndef BLESKOMAT_FONTS_CHECKBOOK_20PT_H
-#define BLESKOMAT_FONTS_CHECKBOOK_20PT_H
+#ifndef BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_20PT_H
+#define BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_20PT_H
 
-const uint8_t Checkbook20pt7bBitmaps[] PROGMEM = {
+const uint8_t CheckbookLightning20pt7bBitmaps[] PROGMEM = {
   0x3C, 0x3F, 0xBF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xBF, 0x9F,
   0xCF, 0xE7, 0xF3, 0xF9, 0xF8, 0x7C, 0x3E, 0x1F, 0x0F, 0x87, 0x83, 0xC0,
   0xE0, 0x70, 0x38, 0x00, 0x00, 0x3F, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0xFE,
@@ -472,7 +472,7 @@ const uint8_t Checkbook20pt7bBitmaps[] PROGMEM = {
   0x80, 0x00, 0x18, 0x00, 0x01, 0x80, 0x00, 0x18, 0x00, 0x01, 0x80, 0x00,
   0x18, 0x00, 0x01, 0x80, 0x00, 0x18, 0x00, 0x01, 0xFF, 0xFF, 0xF0 };
 
-const GFXglyph Checkbook20pt7bGlyphs[] PROGMEM = {
+const GFXglyph CheckbookLightning20pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,  13,    0,    1 },   // 0x20 ' '
   {     0,   9,  33,  11,    1,  -32 },   // 0x21 '!'
   {    38,  20,  25,  29,    5,  -24 },   // 0x22 '"'
@@ -569,9 +569,9 @@ const GFXglyph Checkbook20pt7bGlyphs[] PROGMEM = {
   {  5501,  20,  25,  29,    5,  -24 },   // 0x7D '}'
   {  5564,  20,  25,  29,    5,  -24 } }; // 0x7E '~'
 
-const GFXfont Checkbook20pt7b PROGMEM = {
-  (uint8_t  *)Checkbook20pt7bBitmaps,
-  (GFXglyph *)Checkbook20pt7bGlyphs,
+const GFXfont CheckbookLightning20pt7b PROGMEM = {
+  (uint8_t  *)CheckbookLightning20pt7bBitmaps,
+  (GFXglyph *)CheckbookLightning20pt7bGlyphs,
   0x20, 0x7E, 39 };
 
 // Approx. 6299 bytes
