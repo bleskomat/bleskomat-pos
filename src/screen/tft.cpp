@@ -10,6 +10,7 @@ namespace {
 	int16_t center_x;
 	int16_t center_y;
 	std::string currentPaymentQRCodeData;
+	bool backlightOff = false;
 
 	typedef std::vector<GFXfont> FontList;
 
@@ -243,6 +244,22 @@ namespace screen_tft {
 		const int newContrastPercent = std::max(minContrastPercent, std::min(100, currentContrastPercent + percentChange));
 		if (newContrastPercent != currentContrastPercent) {
 			setContrastLevel(newContrastPercent);
+		}
+	}
+
+	void sleep() {
+		if (TFT_BL && !backlightOff) {
+			logger::write("Turning off TFT backlight");
+			digitalWrite(TFT_BL, LOW);
+			backlightOff = true;
+		}
+	}
+
+	void wakeup() {
+		if (TFT_BL && backlightOff) {
+			logger::write("Turning on TFT backlight");
+			digitalWrite(TFT_BL, HIGH);
+			backlightOff = false;
 		}
 	}
 }

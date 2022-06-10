@@ -41,4 +41,12 @@ namespace screen {
 	void adjustContrast(const int &percentChange) {
 		screen_tft::adjustContrast(percentChange);
 	}
+
+	void sleep() {
+		screen_tft::sleep();
+	}
+
+	void wakeup() {
+		screen_tft::wakeup();
+	}
 }

@@ -13,6 +13,8 @@ namespace screen {
 	void showPaymentQRCodeScreen(const std::string &qrcodeData);
 	void showPaymentPinScreen(const std::string &pin);
 	void adjustContrast(const int &percentChange);
+	void sleep();
+	void wakeup();
 }
 
 #endif

@@ -13,6 +13,7 @@ namespace {
 		{ "keypadColPins", "33,32,25" },
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
+		{ "sleepModeDelay", "30000" },
 		{ "logLevel", "info" },
 		{ "spiffsFormatted", "false" }
 	};
@@ -135,6 +136,7 @@ namespace config {
 		// values["keypadColPins"] = "33,32,25";
 		// values["locale"] = "en";
 		// values["tftRotation"] = "2";
+		// values["sleepModeDelay"] = "30000";
 		// values["logLevel"] = "info";
 		// values["spiffsFormatted"] = "false";
 	}

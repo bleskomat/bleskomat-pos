@@ -2,6 +2,7 @@
 
 uint16_t amountCentsDivisor = 1;
 unsigned short maxNumKeysPressed = 12;
+unsigned int sleepModeDelay;
 
 void setup() {
 	Serial.begin(MONITOR_SPEED);
@@ -10,6 +11,7 @@ void setup() {
 	logger::init();
 	logger::write(firmwareName + ": Firmware version = " + firmwareVersion + ", commit hash = " + firmwareCommitHash);
 	logger::write(config::getConfigurationsAsString());
+	power::init();
 	jsonRpc::init();
 	screen::init();
 	keypad::init();
@@ -18,9 +20,10 @@ void setup() {
 	if (fiatPrecision > 0) {
 		maxNumKeysPressed--;
 	}
+	sleepModeDelay = config::getUnsignedInt("sleepModeDelay");
 }
 
-std::string leftStripZeroes(const std::string &keys) {
+std::string leftTrimZeros(const std::string &keys) {
 	return std::string(keys).erase(0, std::min(keys.find_first_not_of('0'), keys.size() - 1));
 }
 
@@ -28,7 +31,7 @@ double keysToAmount(const std::string &t_keys) {
 	if (t_keys == "") {
 		return 0;
 	}
-	const std::string trimmed = leftStripZeroes(t_keys);
+	const std::string trimmed = leftTrimZeros(t_keys);
 	double amount = std::stod(trimmed.c_str());
 	if (amountCentsDivisor > 1) {
 		amount = amount / amountCentsDivisor;
@@ -39,7 +42,23 @@ double keysToAmount(const std::string &t_keys) {
 std::string pin;
 std::string keysBuffer = "";
 
+unsigned long lastActivityTime = millis();
+bool isFakeSleeping = false;
+
 void runAppLoop() {
+	if (sleepModeDelay > 0 && millis() - lastActivityTime > sleepModeDelay) {
+		if (power::isUSBPowered()) {
+			// The battery does not charge while in deep sleep mode.
+			// So let's just turn off the screen instead.
+			screen::sleep();
+			isFakeSleeping = true;
+		} else {
+			power::sleep();
+		}
+	} else if (isFakeSleeping) {
+		screen::wakeup();
+		isFakeSleeping = false;
+	}
 	keypad::loop();
 	const std::string currentScreen = screen::getCurrentScreen();
 	if (currentScreen == "") {
@@ -48,6 +67,7 @@ void runAppLoop() {
 	const std::string keyPressed = keypad::getPressedKey();
 	if (keyPressed != "") {
 		logger::write("Key pressed: " + keyPressed);
+		lastActivityTime = millis();
 	}
 	if (currentScreen == "home") {
 		if (keyPressed == "") {
