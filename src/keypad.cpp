@@ -74,7 +74,6 @@ namespace keypad {
 		if (key == NO_KEY) {
 			return "";
 		}
-		std::cout << "key = " << key << std::endl;
 		return std::string() + key;
 	}
 }

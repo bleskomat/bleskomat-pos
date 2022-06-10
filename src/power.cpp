@@ -37,7 +37,7 @@ namespace {
 						const uint64_t pinMask = std::pow(2, pinNum);
 						mask += pinMask;
 					} else {
-						logger::write("Cannot use pin number " + std::to_string(pinNum) + " for wake-up because it is not a valid RTC GPIO");
+						logger::write("Cannot use pin number " + std::to_string(pinNum) + " for wake-up because it is not a valid RTC GPIO", "warn");
 					}
 				}
 			}
