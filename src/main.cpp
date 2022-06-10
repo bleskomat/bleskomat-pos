@@ -44,23 +44,34 @@ std::string keysBuffer = "";
 
 unsigned long lastActivityTime = millis();
 bool isFakeSleeping = false;
+void handleSleepMode(const std::string &currentScreen) {
+	if (sleepModeDelay > 0) {
+		// Increase the sleep mode delay for payment screens.
+		const unsigned int delayMultiplier = (currentScreen == "paymentQRCode" || currentScreen == "paymentPin" ? 4 : 1);
+		const unsigned int delay = sleepModeDelay * delayMultiplier;
+		if (millis() - lastActivityTime > delay) {
+			if (!isFakeSleeping) {
+				if (power::isUSBPowered()) {
+					// The battery does not charge while in deep sleep mode.
+					// So let's just turn off the screen instead.
+					screen::sleep();
+					isFakeSleeping = true;
+				} else {
+					power::sleep();
+				}
+			}
+		} else if (isFakeSleeping) {
+			screen::wakeup();
+			isFakeSleeping = false;
+		}
+	}
+}
 
 void runAppLoop() {
-	if (sleepModeDelay > 0 && millis() - lastActivityTime > sleepModeDelay) {
-		if (power::isUSBPowered()) {
-			// The battery does not charge while in deep sleep mode.
-			// So let's just turn off the screen instead.
-			screen::sleep();
-			isFakeSleeping = true;
-		} else {
-			power::sleep();
-		}
-	} else if (isFakeSleeping) {
-		screen::wakeup();
-		isFakeSleeping = false;
-	}
-	keypad::loop();
+	power::loop();
 	const std::string currentScreen = screen::getCurrentScreen();
+	handleSleepMode(currentScreen);
+	keypad::loop();
 	if (currentScreen == "") {
 		screen::showHomeScreen();
 	}

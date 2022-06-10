@@ -8,6 +8,7 @@
 
 namespace power {
 	void init();
+	void loop();
 	bool isUSBPowered();
 	void sleep();
 }

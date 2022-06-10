@@ -7,6 +7,8 @@ namespace {
 	unsigned long lastMeasuredVoltageTime;
 	const unsigned int measureVoltageDebounce = 1000;
 	uint64_t wakeupGPIOMask;
+	unsigned long lastVoltageCheckTime;
+	const unsigned int voltageCheckDelay = 10000;
 
 	float getInputVoltage(const bool &force = false) {
 		if (!force && lastMeasuredInputVoltage > 0 && millis() - lastMeasuredVoltageTime < measureVoltageDebounce) {
@@ -19,7 +21,6 @@ namespace {
 			delayMicroseconds(50);
 		} while (++numReads < 30);
 		const float voltage = ((readsTotal / numReads) / 4095.0f) * 2.0f * 3.3f * (1100.0f / 1000.0f);
-		logger::write("Input Voltage = " + std::to_string(voltage), "debug");
 		lastMeasuredInputVoltage = voltage;
 		lastMeasuredVoltageTime = millis();
 		return voltage;
@@ -50,6 +51,13 @@ namespace power {
 
 	void init() {
 		wakeupGPIOMask = stringListToGPIOMask(config::getString("keypadColPins"));
+	}
+
+	void loop() {
+		if (millis() - lastVoltageCheckTime > voltageCheckDelay) {
+			logger::write("Input Voltage = " + std::to_string(getInputVoltage()), "debug");
+			lastVoltageCheckTime = millis();
+		}
 	}
 
 	bool isUSBPowered() {
