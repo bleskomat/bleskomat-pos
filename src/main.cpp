@@ -44,21 +44,22 @@ std::string keysBuffer = "";
 
 unsigned long lastActivityTime = millis();
 bool isFakeSleeping = false;
+
 void handleSleepMode(const std::string &currentScreen) {
 	if (sleepModeDelay > 0) {
 		// Increase the sleep mode delay for payment screens.
 		const unsigned int delayMultiplier = (currentScreen == "paymentQRCode" || currentScreen == "paymentPin" ? 4 : 1);
 		const unsigned int delay = sleepModeDelay * delayMultiplier;
 		if (millis() - lastActivityTime > delay) {
-			if (!isFakeSleeping) {
-				if (power::isUSBPowered()) {
+			if (power::isUSBPowered()) {
+				if (!isFakeSleeping) {
 					// The battery does not charge while in deep sleep mode.
 					// So let's just turn off the screen instead.
 					screen::sleep();
 					isFakeSleeping = true;
-				} else {
-					power::sleep();
 				}
+			} else {
+				power::sleep();
 			}
 		} else if (isFakeSleeping) {
 			screen::wakeup();
