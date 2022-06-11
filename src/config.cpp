@@ -14,6 +14,7 @@ namespace {
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
 		{ "sleepModeDelay", "30000" },
+		{ "contrastLevel", "60 "},
 		{ "logLevel", "info" },
 		{ "spiffsFormatted", "false" }
 	};
@@ -137,6 +138,7 @@ namespace config {
 		// values["locale"] = "en";
 		// values["tftRotation"] = "2";
 		// values["sleepModeDelay"] = "30000";
+		// values["contrastLevel"] = "60";
 		// values["logLevel"] = "info";
 		// values["spiffsFormatted"] = "false";
 	}
@@ -222,6 +224,18 @@ namespace config {
 				saveKeyValueToNVS(key, value);
 				setConfigValue(key, value);
 			}
+		}
+		endNVS();
+		return true;
+	}
+
+	bool saveConfiguration(const char* key, const std::string &value) {
+		if (!nvs_available && !initNVS()) {
+			return false;
+		}
+		if (isConfigKey(key)) {
+			saveKeyValueToNVS(key, value);
+			setConfigValue(key, value);
 		}
 		endNVS();
 		return true;

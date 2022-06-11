@@ -25,6 +25,7 @@ namespace config {
 	JsonObject getConfigurations();
 	std::string getConfigurationsAsString();
 	bool saveConfigurations(const JsonObject &configurations);
+	bool saveConfiguration(const char* key, const std::string &value);
 }
 
 #endif

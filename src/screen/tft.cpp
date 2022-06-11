@@ -175,7 +175,9 @@ namespace {
 		currentContrastPercent = percent;
 		const int value = std::ceil((percent * 255) / 100);
 		textColor = tft.color565(value, value, value);
-		logger::write("Set contrast level to " + std::to_string(percent) + " %");
+		const std::string percentStr = std::to_string(percent);
+		config::saveConfiguration("contrastLevel", percentStr);
+		logger::write("Set contrast level to " + percentStr + " %");
 		if (currentPaymentQRCodeData != "") {
 			screen_tft::showPaymentQRCodeScreen(currentPaymentQRCodeData);
 		}
@@ -193,7 +195,7 @@ namespace screen_tft {
 		center_x = tft.width() / 2;
 		center_y = tft.height() / 2;
 		clearScreen();
-		setContrastLevel(60);
+		setContrastLevel(config::getUnsignedInt("contrastLevel"));
 	}
 
 	void showHomeScreen() {
