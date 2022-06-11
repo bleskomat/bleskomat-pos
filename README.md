@@ -2,6 +2,8 @@
 
 The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository contains the firmware source, scripts to compile and upload the firmware to a hardware device, and basic instructions.
 
+![](https://github.com/bleskomat/bleskomat-pos/blob/master/assets/images/banner.jpg)
+
 * [Software Requirements](#software-requirements)
 * [Installing Libraries and Dependencies](#installing-libraries-and-dependencies)
 * [Compiling and Uploading to Device](#compiling-and-uploading-to-device)
