@@ -1,25 +1,66 @@
-# bleskomat-pos
+# Bleskomat POS
 
-The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository contains the firmware source, scripts to compile and upload the firmware to a hardware device, and basic instructions.
+The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository includes the open-source firmware, how-to instructions to build your own hardware device, and scripts to compile the firmware from source.
 
 ![](https://github.com/bleskomat/bleskomat-pos/blob/master/assets/images/banner.jpg)
 
-* [Software Requirements](#software-requirements)
+You can buy the [pre-assembled Bleskomat POS](https://shop.bleskomat.com/product/bleskomat-pos) from the official Bleskomat shop - includes battery, 3D-printed case, and 6 months access to the Bleskomat Platform. Alternatively, you can buy the components to build your own from the official [Lilygo shop](https://aliexpress.com/item/1005003589706292.html).
+
+The Bleskomat POS must be paired with a server to facilitate Lightning Network payments on its behalf; see the options below:
+* [Bleskomat Platform](https://platform.bleskomat.com) - non-custodial, requires a monthly subscription
+* [bleskomat-server](https://github.com/bleskomat/bleskomat-server) - non-custodial, open-source, self-hosted solution
+* [lnbits](https://github.com/lnbits/lnbits-legend) via the LNURLDevice extension - open-source, self-hosted and possible to use custodial instances hosted by others; public instances of lnbits:
+	* [legend.lnbits.com](https://legend.lnbits.com) - unstable, don't leave funds on this instance for very long
+
+The rest of this document details the hardware and software requirements, how to build the hardware yourself, and instructions for compiling and uploading the firmware from source.
+
+* [Requirements](#requirements)
+	* [Hardware Requirements](#hardware-requirements)
+	* [Software Requirements](#software-requirements)
+* [Building the Hardware Device](#building-the-hardware-device)
 * [Installing Libraries and Dependencies](#installing-libraries-and-dependencies)
 * [Compiling and Uploading to Device](#compiling-and-uploading-to-device)
 * [Generate Font Header Files](#generate-font-header-files)
-* [Support](#support)
 * [Changelog](#changelog)
+* [Support](#support)
 * [License](#license)
 * [Trademark](#trademark)
 
 
-## Software Requirements
+## Requirements
+
+This section includes information about the software and hardware requirements needed to build this project.
+
+
+### Hardware Requirements
+
+Components needed to build your own Bleskomat POS:
+* Lilygo TTGO T-Display kit - this includes the following:
+	* Lilygo T-Display Module
+	* Keyboard
+	* USB-C cable
+	* JST connector (for battery)
+	* With or without 3D-printed case
+* 3.7V Lipo battery with built-in over/under charge protection
+
+Equipment/tools needed:
+* Soldering iron
+* Multimeter
+
+
+### Software Requirements
 
 * [make](https://www.gnu.org/software/make/)
 * [PlatformIO Core (CLI)](https://docs.platformio.org/en/latest/core/)
 	* Version 5 or newer
 	* Only the CLI ("Core") is required
+
+
+## Building the Hardware Device
+
+Before proceeding, be sure that you have all the project's [hardware requirements](#hardware-requirements).
+
+Step-by-step build process for the hardware device.
 
 
 ## Installing Libraries and Dependencies
@@ -92,14 +133,14 @@ Then include the new font header file near the others in the `./include/screen/t
 ```
 
 
-## Support
-
-Need some help? Join us in the official [Telegram group](https://t.me/bleskomat) or send us an email at [support@bleskomat.com](mailto:support@bleskomat.com) and we will try our best to respond in a reasonable time. If you have a feature request or bug to report, please [open an issue](https://github.com/bleskomat/bleskomat-pos/issues) in this project repository.
-
-
 ## Changelog
 
 See [CHANGELOG.md](https://github.com/bleskomat/bleskomat-pos/blob/master/CHANGELOG.md)
+
+
+## Support
+
+Need some help? Join us in the official [Telegram group](https://t.me/bleskomat) or send us an email at [support@bleskomat.com](mailto:support@bleskomat.com) and we will try our best to respond in a reasonable time. If you have a feature request or bug to report, please [open an issue](https://github.com/bleskomat/bleskomat-pos/issues) in this project repository.
 
 
 ## License
