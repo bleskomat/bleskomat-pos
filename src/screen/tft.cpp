@@ -194,7 +194,6 @@ namespace screen_tft {
 		logger::write("TFT display height = " + std::to_string(tft.height()));
 		center_x = tft.width() / 2;
 		center_y = tft.height() / 2;
-		clearScreen();
 		setContrastLevel(config::getUnsignedInt("contrastLevel"));
 	}
 

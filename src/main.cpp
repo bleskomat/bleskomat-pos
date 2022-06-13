@@ -4,24 +4,9 @@ uint16_t amountCentsDivisor = 1;
 unsigned short maxNumKeysPressed = 12;
 unsigned int sleepModeDelay;
 
-void setup() {
-	Serial.begin(MONITOR_SPEED);
-	spiffs::init();
-	config::init();
-	logger::init();
-	logger::write(firmwareName + ": Firmware version = " + firmwareVersion + ", commit hash = " + firmwareCommitHash);
-	logger::write(config::getConfigurationsAsString());
-	power::init();
-	jsonRpc::init();
-	screen::init();
-	keypad::init();
-	const unsigned short fiatPrecision = config::getUnsignedShort("fiatPrecision");
-	amountCentsDivisor = std::pow(10, fiatPrecision);
-	if (fiatPrecision > 0) {
-		maxNumKeysPressed--;
-	}
-	sleepModeDelay = config::getUnsignedInt("sleepModeDelay");
-}
+std::string pin = "";
+std::string qrcodeData = "";
+std::string keysBuffer = "";
 
 std::string leftTrimZeros(const std::string &keys) {
 	return std::string(keys).erase(0, std::min(keys.find_first_not_of('0'), keys.size() - 1));
@@ -39,18 +24,50 @@ double keysToAmount(const std::string &t_keys) {
 	return amount;
 }
 
-std::string pin;
-std::string keysBuffer = "";
+void setup() {
+	Serial.begin(MONITOR_SPEED);
+	spiffs::init();
+	config::init();
+	logger::init();
+	logger::write(firmwareName + ": Firmware version = " + firmwareVersion + ", commit hash = " + firmwareCommitHash);
+	logger::write(config::getConfigurationsAsString());
+	power::init();
+	jsonRpc::init();
+	screen::init();
+	keypad::init();
+	const unsigned short fiatPrecision = config::getUnsignedShort("fiatPrecision");
+	amountCentsDivisor = std::pow(10, fiatPrecision);
+	if (fiatPrecision > 0) {
+		maxNumKeysPressed--;
+	}
+	sleepModeDelay = config::getUnsignedInt("sleepModeDelay");
+	if (esp_sleep_get_wakeup_cause() != ESP_SLEEP_WAKEUP_UNDEFINED) {
+		// Waking up from deep sleep...
+		cache::init();
+		const std::string lastScreen = cache::getString("lastScreen");
+		pin = cache::getString("pin");
+		qrcodeData = cache::getString("qrcodeData");
+		keysBuffer = cache::getString("keysBuffer");
+		cache::end();
+		logger::write("Waking up... ");
+		if (lastScreen == "home") {
+			screen::showHomeScreen();
+		} else if (lastScreen == "enterAmount") {
+			screen::showEnterAmountScreen(keysToAmount(keysBuffer));
+		} else if (lastScreen == "paymentQRCode") {
+			screen::showPaymentQRCodeScreen(qrcodeData);
+		} else if (lastScreen == "paymentPin") {
+			screen::showPaymentPinScreen(pin);
+		}
+	}
+}
 
 unsigned long lastActivityTime = millis();
 bool isFakeSleeping = false;
 
-void handleSleepMode(const std::string &currentScreen) {
+void handleSleepMode() {
 	if (sleepModeDelay > 0) {
-		// Increase the sleep mode delay for payment screens.
-		const unsigned int delayMultiplier = (currentScreen == "paymentQRCode" || currentScreen == "paymentPin" ? 4 : 1);
-		const unsigned int delay = sleepModeDelay * delayMultiplier;
-		if (millis() - lastActivityTime > delay) {
+		if (millis() - lastActivityTime > sleepModeDelay) {
 			if (power::isUSBPowered()) {
 				if (!isFakeSleeping) {
 					// The battery does not charge while in deep sleep mode.
@@ -59,6 +76,12 @@ void handleSleepMode(const std::string &currentScreen) {
 					isFakeSleeping = true;
 				}
 			} else {
+				cache::init();
+				cache::save("pin", pin);
+				cache::save("keysBuffer", keysBuffer);
+				cache::save("qrcodeData", qrcodeData);
+				cache::save("lastScreen", screen::getCurrentScreen());
+				cache::end();
 				power::sleep();
 			}
 		} else if (isFakeSleeping) {
@@ -70,9 +93,9 @@ void handleSleepMode(const std::string &currentScreen) {
 
 void runAppLoop() {
 	power::loop();
-	const std::string currentScreen = screen::getCurrentScreen();
-	handleSleepMode(currentScreen);
+	handleSleepMode();
 	keypad::loop();
+	const std::string currentScreen = screen::getCurrentScreen();
 	if (currentScreen == "") {
 		screen::showHomeScreen();
 	}
@@ -104,10 +127,10 @@ void runAppLoop() {
 		} else if (keyPressed == "#") {
 			const double amount = keysToAmount(keysBuffer);
 			if (amount > 0) {
+				qrcodeData = "";
 				pin = util::generateRandomPin();
 				const std::string signedUrl = util::createLnurlPay(amount, pin);
 				const std::string encoded = util::lnurlEncode(signedUrl);
-				std::string qrcodeData = "";
 				// Allows upper or lower case URI schema prefix via a configuration option.
 				// Some wallet apps might not support uppercase URI prefixes.
 				qrcodeData += config::getString("uriSchemaPrefix");

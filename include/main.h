@@ -1,6 +1,7 @@
 #ifndef BLESKOMAT_MAIN_H
 #define BLESKOMAT_MAIN_H
 
+#include "cache.h"
 #include "config.h"
 #include "json-rpc.h"
 #include "keypad.h"
