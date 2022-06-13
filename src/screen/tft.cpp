@@ -114,6 +114,7 @@ namespace {
 		try {
 			const char* data = t_data.c_str();
 			uint8_t version = 1;
+			uint8_t scale = 1;
 			while (version <= 40) {
 				const uint16_t bufferSize = qrcode_getBufferSize(version);
 				QRCode qrcode;
@@ -121,7 +122,7 @@ namespace {
 				const int8_t result = qrcode_initText(&qrcode, qrcodeData, version, ECC_LOW, data);
 				if (result == 0) {
 					// QR encoding successful.
-					const uint8_t scale = std::min(std::floor(max_w / qrcode.size), std::floor(max_h / qrcode.size));
+					scale = std::min(std::floor(max_w / qrcode.size), std::floor(max_h / qrcode.size));
 					const uint16_t w = qrcode.size * scale;
 					const uint16_t h = w;
 					int16_t box_x = x;
@@ -151,12 +152,15 @@ namespace {
 					throw std::runtime_error("Unknown failure case");
 				}
 			}
-			// Draw a margin around the QR code - to improve readability.
-			const uint32_t margin = (tft.height() - bbox.h) / 2;
-			tft.fillRect(bbox.x - margin, 0, margin, tft.height(), textColor);
-			tft.fillRect(bbox.x, 0, bbox.w, margin, textColor);
-			tft.fillRect(bbox.x + bbox.w, 0, margin, tft.height(), textColor);
-			tft.fillRect(bbox.x, tft.height() - margin, bbox.w, margin, textColor);
+			// Draw a border around the QR code - to improve readability.
+			const uint8_t margin_x = std::min(scale, (uint8_t)std::floor((tft.width() - bbox.w) / 2));
+			const uint8_t margin_y = std::min(scale, (uint8_t)std::floor((tft.height() - bbox.h) / 2));
+			const uint16_t border_x = bbox.x - margin_x;
+			const uint16_t border_y = bbox.y - margin_y;
+			tft.fillRect(border_x, border_y, margin_x, bbox.h + (margin_y * 2), textColor);// left
+			tft.fillRect(bbox.x + bbox.w, border_y, margin_x, bbox.h + (margin_y * 2), textColor);// right
+			tft.fillRect(bbox.x, border_y, bbox.w, margin_y, textColor);// top
+			tft.fillRect(bbox.x, bbox.y + bbox.h, bbox.w, margin_y, textColor);// bottom
 		} catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
 			logger::write("Error while rendering QR code: " + std::string(e.what()), "error");
