@@ -14,7 +14,7 @@ namespace {
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
 		{ "sleepModeDelay", "30000" },
-		{ "contrastLevel", "60 "},
+		{ "contrastLevel", "60"},
 		{ "logLevel", "info" },
 		{ "spiffsFormatted", "false" }
 	};
