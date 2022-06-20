@@ -5,10 +5,15 @@ namespace {
 	const uint8_t readPin = 34;
 	float lastMeasuredInputVoltage;
 	unsigned long lastMeasuredVoltageTime;
-	const unsigned int measureVoltageDebounce = 1000;
+	const unsigned int measureVoltageDebounce = 2500;
 	uint64_t wakeupGPIOMask;
 	unsigned long lastVoltageCheckTime;
 	const unsigned int voltageCheckDelay = 10000;
+	const unsigned int maxBatteryVoltage = 4.2;
+	const unsigned int minBatteryVoltage = 2.5;
+	const unsigned int getBatteryPercentDebounce = 10000;
+	unsigned long lastGetBatteryPercentTime;
+	int lastBatteryPercent = 0;
 
 	float getInputVoltage(const bool &force = false) {
 		if (!force && lastMeasuredInputVoltage > 0 && millis() - lastMeasuredVoltageTime < measureVoltageDebounce) {
@@ -69,5 +74,18 @@ namespace power {
 		delay(1000);
 		esp_sleep_enable_ext1_wakeup(wakeupGPIOMask, ESP_EXT1_WAKEUP_ANY_HIGH);
 		esp_deep_sleep_start();
+	}
+
+	int getBatteryPercent(const bool &force) {
+		if (!force && lastGetBatteryPercentTime > 0 && millis() - lastGetBatteryPercentTime < getBatteryPercentDebounce) {
+			return lastBatteryPercent;
+		}
+		lastBatteryPercent = std::min(100,
+			std::max(0,
+				100 - (int)std::ceil(100 * ((maxBatteryVoltage - getInputVoltage()) / (maxBatteryVoltage - minBatteryVoltage)))
+			)
+		);
+		lastGetBatteryPercentTime = millis();
+		return lastBatteryPercent;
 	}
 }

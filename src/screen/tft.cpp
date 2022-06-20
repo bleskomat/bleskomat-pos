@@ -45,6 +45,7 @@ namespace {
 	};
 
 	BoundingBox amountTextBBox;
+	BoundingBox batteryPercentBBox;
 
 	std::string getAmountFiatCurrencyString(const double &amount) {
 		return util::doubleToStringWithPrecision(amount, config::getUnsignedShort("fiatPrecision")) + " " + config::getString("fiatCurrency");
@@ -84,12 +85,13 @@ namespace {
 	BoundingBox renderText(
 		const std::string &t_text,
 		const GFXfont font,
+		const uint16_t &color,
 		const int16_t x,
 		const int16_t y,
 		const uint8_t &alignment = MC_DATUM
 	) {
 		const char* text = t_text.c_str();
-		tft.setTextColor(textColor);
+		tft.setTextColor(color);
 		tft.setTextSize(1);
 		tft.setFreeFont(&font);
 		BoundingBox bbox = calculateTextDimensions(text, font);
@@ -173,6 +175,10 @@ namespace {
 		if (reset && currentPaymentQRCodeData != "") {
 			currentPaymentQRCodeData = "";
 		}
+		batteryPercentBBox.x = 0;
+		batteryPercentBBox.y = 0;
+		batteryPercentBBox.w = 0;
+		batteryPercentBBox.h = 0;
 	}
 
 	void setContrastLevel(const int &percent) {
@@ -205,15 +211,15 @@ namespace screen_tft {
 		clearScreen();
 		const std::string logoText = "BLESKOMAT";
 		const GFXfont logoFont = getBestFitFont(logoText, brandFonts);
-		renderText(logoText, logoFont, center_x, center_y - 6);
+		renderText(logoText, logoFont, textColor, center_x, center_y - 6);
 		const std::string instructionText = i18n::t("home_instruction");
-		renderText(instructionText, Courier_Prime_Code10pt7b, center_x, tft.height() - 16);
+		renderText(instructionText, Courier_Prime_Code10pt7b, textColor, center_x, tft.height() - 16);
 	}
 
 	void showEnterAmountScreen(const double &amount) {
 		clearScreen();
 		const std::string instructionText2 = i18n::t("enter_amount_instruction2");
-		const BoundingBox instructionText2_bbox = renderText(instructionText2, Courier_Prime_Code10pt7b, tft.width(), tft.height(), BR_DATUM);
+		const BoundingBox instructionText2_bbox = renderText(instructionText2, Courier_Prime_Code10pt7b, textColor, tft.width(), tft.height(), BR_DATUM);
 		const std::string instructionText1 = i18n::t("enter_amount_instruction1");
 		int16_t instructionText1_y = tft.height();
 		int16_t amount_y = center_y - 12;
@@ -221,10 +227,10 @@ namespace screen_tft {
 			instructionText1_y -= (instructionText2_bbox.h - 2);
 			amount_y -= (instructionText2_bbox.h - 2) / 2;
 		}
-		renderText(instructionText1, Courier_Prime_Code10pt7b, 0, instructionText1_y, BL_DATUM);
+		renderText(instructionText1, Courier_Prime_Code10pt7b, textColor, 0, instructionText1_y, BL_DATUM);
 		const std::string amountText = getAmountFiatCurrencyString(amount);
 		const GFXfont amountFont = getBestFitFont(amountText, monospaceFonts);
-		renderText(amountText, amountFont, center_x, amount_y);
+		renderText(amountText, amountFont, textColor, center_x, amount_y);
 	}
 
 	void showPaymentQRCodeScreen(const std::string &qrcodeData) {
@@ -238,17 +244,42 @@ namespace screen_tft {
 	void showPaymentPinScreen(const std::string &pin) {
 		clearScreen();
 		const GFXfont pinFont = getBestFitFont(pin, monospaceFonts);
-		renderText(pin, pinFont, center_x, center_y);
+		renderText(pin, pinFont, textColor, center_x, center_y);
 		const std::string instructionText1 = i18n::t("payment_pin_instruction1");
-		renderText(instructionText1, Courier_Prime_Code12pt7b, center_x, 18);
+		renderText(instructionText1, Courier_Prime_Code12pt7b, textColor, center_x, 18);
 		const std::string instructionText2 = i18n::t("payment_pin_instruction2");
-		renderText(instructionText2, Courier_Prime_Code10pt7b, 0, tft.height(), BL_DATUM);
+		renderText(instructionText2, Courier_Prime_Code10pt7b, textColor, 0, tft.height(), BL_DATUM);
 	}
 
 	void adjustContrast(const int &percentChange) {
 		const int newContrastPercent = std::max(minContrastPercent, std::min(100, currentContrastPercent + percentChange));
 		if (newContrastPercent != currentContrastPercent) {
 			setContrastLevel(newContrastPercent);
+		}
+	}
+
+	void showBatteryPercent(const int &percent) {
+		if (currentPaymentQRCodeData == "" && !(batteryPercentBBox.w > 0)) {
+			const std::string percentText = std::to_string(percent) + "%";
+			uint16_t color;
+			if (percent >= 66) {
+				color = 0x1983;// green
+			} else if (percent >= 33) {
+				color = 0x4143;// orange
+			} else {
+				color = 0x3041;// red
+			}
+			batteryPercentBBox = renderText(percentText, Courier_Prime_Code10pt7b, color, tft.width(), 0, TR_DATUM);
+		}
+	}
+
+	void hideBatteryPercent() {
+		if (batteryPercentBBox.w > 0) {
+			tft.fillRect(batteryPercentBBox.x, batteryPercentBBox.y, batteryPercentBBox.w, batteryPercentBBox.h, bgColor);
+			batteryPercentBBox.x = 0;
+			batteryPercentBBox.y = 0;
+			batteryPercentBBox.w = 0;
+			batteryPercentBBox.h = 0;
 		}
 	}
 

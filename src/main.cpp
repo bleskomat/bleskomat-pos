@@ -160,6 +160,11 @@ void runAppLoop() {
 			screen::showHomeScreen();
 		}
 	}
+	if (power::isUSBPowered()) {
+		screen::hideBatteryPercent();
+	} else {
+		screen::showBatteryPercent(power::getBatteryPercent());
+	}
 }
 
 void loop() {

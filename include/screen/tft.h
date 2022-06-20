@@ -38,6 +38,8 @@ namespace screen_tft {
 	void showPaymentQRCodeScreen(const std::string &qrcodeData);
 	void showPaymentPinScreen(const std::string &pin);
 	void adjustContrast(const int &percentChange);
+	void showBatteryPercent(const int &percent);
+	void hideBatteryPercent();
 	void sleep();
 	void wakeup();
 }
