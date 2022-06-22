@@ -11,18 +11,9 @@ namespace {
 	State state = State::uninitialized;
 	std::vector<byte> keypadRowPins;
 	std::vector<byte> keypadColPins;
+	std::string keypadCharList;
 	Keypad* keypadInstance;
-	byte* rowPins;
-	byte* colPins;
-	const uint8_t numRows = 4;
-	const uint8_t numCols = 3;
-	char keys[numRows][numCols] = {
-		{'1', '2', '3'},
-		{'4', '5', '6'},
-		{'7', '8', '9'},
-		{'*', '0', '#'}
-	};
-	char* userKeymap = makeKeymap(keys);
+	char* userKeymap;
 
 	std::vector<byte> stringListToByteVector(const std::string &stringList, const char &delimiter = ',') {
 		std::vector<byte> items;
@@ -46,21 +37,21 @@ namespace keypad {
 	void init() {
 		keypadRowPins = stringListToByteVector(config::getString("keypadRowPins"));
 		keypadColPins = stringListToByteVector(config::getString("keypadColPins"));
+		keypadCharList = config::getString("keypadCharList");
 	}
 
 	void loop() {
 		if (state == State::uninitialized) {
 			logger::write("Initializing keypad...");
-			if (keypadRowPins.size() != numRows) {
-				logger::write("Cannot initialize keypad: \"keypadRowPins\" must define " + std::to_string(numRows) + " pins", "warn");
+			if (!(keypadRowPins.size() > 0)) {
+				logger::write("Cannot initialize keypad: \"keypadRowPins\" not set", "warn");
 				state = State::failed;
-			} else if (keypadColPins.size() != numCols) {
-				logger::write("Cannot initialize keypad: \"keypadColPins\" must define " + std::to_string(numCols) + " pins", "warn");
+			} else if (!(keypadColPins.size() > 0)) {
+				logger::write("Cannot initialize keypad: \"keypadColPins\" not set", "warn");
 				state = State::failed;
 			} else {
-				rowPins = keypadRowPins.data();
-				colPins = keypadColPins.data();
-				keypadInstance = new Keypad(userKeymap, rowPins, colPins, numRows, numCols);
+				userKeymap = makeKeymap(keypadCharList.c_str());
+				keypadInstance = new Keypad(userKeymap, keypadRowPins.data(), keypadColPins.data(), keypadRowPins.size(), keypadColPins.size());
 				state = State::initialized;
 			}
 		}

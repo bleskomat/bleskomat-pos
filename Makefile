@@ -7,8 +7,9 @@
 #
 
 ## Variables
-DEVICE ?= /dev/ttyACM1
 BAUDRATE ?= 115200
+DEVICE ?= /dev/ttyACM1
+ENV ?= lilygo_ttgo_tdisplay
 PLATFORM=espressif32
 
 ## Phony targets - these are for when the target-side of a definition
@@ -25,11 +26,11 @@ install:
 	platformio platform install ${PLATFORM}
 
 compile:
-	platformio run
+	platformio run --environment ${ENV}
 
 upload:
 	sudo chown ${USER}:${USER} ${DEVICE}
-	platformio run --upload-port ${DEVICE} --target upload
+	platformio run --environment ${ENV} --upload-port ${DEVICE} --target upload
 
 monitor:
 	sudo chown ${USER}:${USER} ${DEVICE}

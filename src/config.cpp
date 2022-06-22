@@ -11,6 +11,7 @@ namespace {
 		{ "fiatPrecision", "2" },
 		{ "keypadRowPins", "21,27,26,22" },
 		{ "keypadColPins", "33,32,25" },
+		{ "keypadCharList", "123456789*0#" },
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
 		{ "sleepModeDelay", "30000" },
@@ -135,6 +136,7 @@ namespace config {
 		// values["fiatPrecision"] = "2";
 		// values["keypadRowPins"] = "21,27,26,22";
 		// values["keypadColPins"] = "33,32,25";
+		// values["keypadCharList"] = "123456789*0#";
 		// values["locale"] = "en";
 		// values["tftRotation"] = "2";
 		// values["sleepModeDelay"] = "30000";

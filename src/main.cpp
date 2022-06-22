@@ -7,6 +7,13 @@ unsigned int sleepModeDelay;
 std::string pin = "";
 std::string qrcodeData = "";
 std::string keysBuffer = "";
+const std::string keyBufferCharList = "0123456789";
+
+void appendToKeyBuffer(const std::string &key) {
+	if (keyBufferCharList.find(key) != std::string::npos) {
+		keysBuffer += key;
+	}
+}
 
 std::string leftTrimZeros(const std::string &keys) {
 	return std::string(keys).erase(0, std::min(keys.find_first_not_of('0'), keys.size() - 1));
@@ -114,7 +121,7 @@ void runAppLoop() {
 			screen::showEnterAmountScreen(keysToAmount(keysBuffer));
 		} else {
 			if (keyPressed != "0" || keysBuffer != "") {
-				keysBuffer += keyPressed;
+				appendToKeyBuffer(keyPressed);
 			}
 			screen::showEnterAmountScreen(keysToAmount(keysBuffer));
 		}
@@ -141,7 +148,7 @@ void runAppLoop() {
 			}
 		} else if (keysBuffer.size() < maxNumKeysPressed) {
 			if (keyPressed != "0" || keysBuffer != "") {
-				keysBuffer += keyPressed;
+				appendToKeyBuffer(keyPressed);
 			}
 			logger::write("keysBuffer = " + keysBuffer);
 			screen::showEnterAmountScreen(keysToAmount(keysBuffer));

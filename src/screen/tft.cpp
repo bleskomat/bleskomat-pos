@@ -24,7 +24,11 @@ namespace {
 		Courier_Prime_Code16pt7b,
 		Courier_Prime_Code14pt7b,
 		Courier_Prime_Code12pt7b,
-		Courier_Prime_Code10pt7b
+		Courier_Prime_Code10pt7b,
+		Courier_Prime_Code9pt7b,
+		Courier_Prime_Code8pt7b,
+		Courier_Prime_Code7pt7b,
+		Courier_Prime_Code6pt7b
 	};
 
 	FontList brandFonts = {
@@ -211,23 +215,25 @@ namespace screen_tft {
 		clearScreen();
 		const std::string logoText = "BLESKOMAT";
 		const GFXfont logoFont = getBestFitFont(logoText, brandFonts);
-		renderText(logoText, logoFont, textColor, center_x, center_y - 6);
+		const BoundingBox logoBBox = renderText(logoText, logoFont, textColor, center_x, center_y - 6);
 		const std::string instructionText = i18n::t("home_instruction");
-		renderText(instructionText, Courier_Prime_Code10pt7b, textColor, center_x, tft.height() - 16);
+		const GFXfont instructionFont = getBestFitFont(instructionText, monospaceFonts, (tft.width() * 10) / 7, logoBBox.h / 2);
+		renderText(instructionText, instructionFont, textColor, center_x, tft.height(), BC_DATUM);
 	}
 
 	void showEnterAmountScreen(const double &amount) {
 		clearScreen();
-		const std::string instructionText2 = i18n::t("enter_amount_instruction2");
-		const BoundingBox instructionText2_bbox = renderText(instructionText2, Courier_Prime_Code10pt7b, textColor, tft.width(), tft.height(), BR_DATUM);
 		const std::string instructionText1 = i18n::t("enter_amount_instruction1");
+		const std::string instructionText2 = i18n::t("enter_amount_instruction2");
+		const GFXfont instructionFont = getBestFitFont(instructionText1 + " " + instructionText2, monospaceFonts, tft.width());
+		const BoundingBox instructionText2_bbox = renderText(instructionText2, instructionFont, textColor, tft.width(), tft.height(), BR_DATUM);
 		int16_t instructionText1_y = tft.height();
 		int16_t amount_y = center_y - 12;
 		if (instructionText1.size() + instructionText2.size() > 16) {
 			instructionText1_y -= (instructionText2_bbox.h - 2);
 			amount_y -= (instructionText2_bbox.h - 2) / 2;
 		}
-		renderText(instructionText1, Courier_Prime_Code10pt7b, textColor, 0, instructionText1_y, BL_DATUM);
+		renderText(instructionText1, instructionFont, textColor, 0, instructionText1_y, BL_DATUM);
 		const std::string amountText = getAmountFiatCurrencyString(amount);
 		const GFXfont amountFont = getBestFitFont(amountText, monospaceFonts);
 		renderText(amountText, amountFont, textColor, center_x, amount_y);
@@ -244,11 +250,13 @@ namespace screen_tft {
 	void showPaymentPinScreen(const std::string &pin) {
 		clearScreen();
 		const GFXfont pinFont = getBestFitFont(pin, monospaceFonts);
-		renderText(pin, pinFont, textColor, center_x, center_y);
+		const BoundingBox pinBBox = renderText(pin, pinFont, textColor, center_x, center_y - 2);
 		const std::string instructionText1 = i18n::t("payment_pin_instruction1");
-		renderText(instructionText1, Courier_Prime_Code12pt7b, textColor, center_x, 18);
+		const GFXfont instructionFont1 = getBestFitFont(instructionText1, monospaceFonts, tft.width(), pinBBox.h / 2);
 		const std::string instructionText2 = i18n::t("payment_pin_instruction2");
-		renderText(instructionText2, Courier_Prime_Code10pt7b, textColor, 0, tft.height(), BL_DATUM);
+		const GFXfont instructionFont2 = getBestFitFont(instructionText2, monospaceFonts, tft.width() / 2, pinBBox.h / 2);
+		renderText(instructionText1, instructionFont1, textColor, center_x, 0, TC_DATUM);
+		renderText(instructionText2, instructionFont2, textColor, 0, tft.height(), BL_DATUM);
 	}
 
 	void adjustContrast(const int &percentChange) {
@@ -288,6 +296,8 @@ namespace screen_tft {
 			logger::write("Turning off TFT backlight");
 			digitalWrite(TFT_BL, LOW);
 			backlightOff = true;
+		} else {
+			clearScreen();
 		}
 	}
 
@@ -296,6 +306,8 @@ namespace screen_tft {
 			logger::write("Turning on TFT backlight");
 			digitalWrite(TFT_BL, HIGH);
 			backlightOff = false;
+		} else {
+			clearScreen();
 		}
 	}
 }

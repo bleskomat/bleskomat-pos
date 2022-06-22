@@ -16,6 +16,10 @@ The rest of this document details the hardware and software requirements, how to
 	* [Hardware Requirements](#hardware-requirements)
 	* [Software Requirements](#software-requirements)
 * [Building the Hardware Device](#building-the-hardware-device)
+	* [Lilygo T-Display Kit](#lilygo-t-display-key)
+	* [ESP32 Devkit](#esp32-devkit)
+		* [Wiring the TFT Display](#wiring-the-tft-display)
+		* [Wiring the Membrane Keypad](#wiring-the-membrane-keypad)
 * [Installing Libraries and Dependencies](#installing-libraries-and-dependencies)
 * [Compiling and Uploading to Device](#compiling-and-uploading-to-device)
 * [Generate Font Header Files](#generate-font-header-files)
@@ -45,6 +49,13 @@ Components needed to build your own Bleskomat POS:
 	* With or without 3D-printed case
 * 3.7V Lipo battery with built-in over/under charge protection
 
+Alternative build components using an __ESP32 Devkit__:
+* ESP32 Devkit
+* 1.8" TFT display
+* 2 x 400-pin breadboards
+* Membrane keypad (4x4 or 4x3)
+* Standard USB to micro USB cable
+
 Equipment/tools needed:
 * Soldering iron
 * Multimeter
@@ -63,6 +74,75 @@ Equipment/tools needed:
 Before proceeding, be sure that you have all the project's [hardware requirements](#hardware-requirements).
 
 Step-by-step build process for the hardware device.
+
+
+### Lilygo T-Display Kit
+
+If using a battery, insert the battery's JST connector into the JST socket on the under-side of the T-Display devkit board. Insert the T-Display devkit board's pins into the keyboard module's sockets - they should line-up perfectly. Solder the pins so that the devkit is solidly connected to the keyboard.
+
+
+### ESP32 Devkit
+
+One breadboard is not large enough to accommodate all the pins of the ESP32 devkit due to the width of the devkit. This is why we recommend to connect two breadboards together.
+
+Remove one of the power rails from one of the breadboards. Use the notches on the sides of the breadboards to connect them together length-wise.
+
+Insert the ESP32 devkit into the pin holes of the new, combined breadboard.
+
+![](docs/esp32devkit-build-breadboard-and-esp32-devkit.png)
+
+Familiarize yourself with the ESP32 devkit's pinout reference below.
+
+#### ESP32 devkit pinout
+
+![](docs/ESP32-devkit-v1-board-pinout-36-gpio-pins.jpg)
+
+
+### Wiring the TFT Display
+
+Insert the pins of the TFT display module into the breadboard where you have space available.
+
+![](docs/esp32devkit-build-tft-display.png)
+
+Use the table below to connect the ESP32 devkit to the TFT display module.
+
+|  ESP32       | TFT         |
+|--------------|-------------|
+| VIN (V5)     | VCC         |
+| GND          | GND         |
+| GPIO22       | CS          |
+| GPIO4        | RESET (RST) |
+| GPIO2        | AO (RS)     |
+| GPIO23       | SDA         |
+| GPIO18       | SCK (CLK)   |
+| 3V3          | LED (NC)    |
+
+Notes on pin naming:
+* There are boards where `GPIXXX` are marked as `GXX` instead of `DXX`.
+* The `G23` may be there **twice** - the correct one is next to `GND`.
+* Some boards have typos so a bit of guess-and-check is necessary sometimes.
+
+![](docs/esp32devkit-build-tft-display-with-wires.png)
+
+Refer to the [ESP32 devkit pinout](#esp32-devkit-pinout) for help identifying the pins on your ESP32.
+
+
+### Wiring the Membrane Keypad
+
+Use the table below to connect the ESP32 devkit to the membrane keypad.
+
+| ESP32       | Keypad   |
+|-------------|----------|
+| GPIO13      | R1       |
+| GPIO14      | R2       |
+| GPIO26      | R3       |
+| GPIO25      | R4       |
+| GPIO33      | C1       |
+| GPIO32      | C2       |
+| GPIO15      | C3       |
+| GPIO21      | C4       |
+
+Refer to the [ESP32 devkit pinout](#esp32-devkit-pinout) for help identifying the pins on your ESP32.
 
 
 ## Installing Libraries and Dependencies
@@ -116,7 +196,7 @@ make fontconvert
 ```
 Then to generate a new font header file for your own .ttf font:
 ```bash
-./tools/Adafruit-GFX-Library/fontconvert ./assets/fonts/CheckbookLightning/CheckbookLightning.ttf 30 > ./include/fonts/checkbooklightning_30pt.h
+./tools/Adafruit-GFX-Library/fontconvert/fontconvert ./assets/fonts/CheckbookLightning/CheckbookLightning.ttf 30 > ./include/fonts/checkbooklightning_30pt.h
 ```
 Don't forget to add header guards to the new file - e.g.:
 ```c
@@ -154,6 +234,10 @@ The following is a list of possible configuration options for the Bleskomat POS:
 * `fiatPrecision` - The number of digits to the right of the decimal point when rendering fiat currency amounts.
 * `keypadRowPins` - Comma-separated list of GPIO numbers for the keypad's row pins.
 * `keypadColPins` - Comma-separated list of GPIO numbers for the keypad's column pins.
+* `keypadCharList` - The keypad character list read left-to-right, top-to-bottom. Examples:
+	* T-Display Keyboard = `"123456789*0#"`
+	* Membrane Keypad (4x3) = `"123456789*0#"`
+	* Membrane Keypad (4x4) = `"123A456B789C*0#D"`
 * `locale` - The locale used when rendering text to the screen. Current supported languages:
 	* "cs" - Czech
 	* "de" - German

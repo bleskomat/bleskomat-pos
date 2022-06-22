@@ -66,7 +66,8 @@ namespace power {
 	}
 
 	bool isUSBPowered() {
-		return getInputVoltage() > 4.5;
+		const float voltage = getInputVoltage();
+		return voltage > 4.5 || voltage < 1;
 	}
 
 	void sleep() {
