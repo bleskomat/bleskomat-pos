@@ -53,6 +53,7 @@ Alternative build components using an __ESP32 Devkit__:
 * ESP32 Devkit
 * 1.8" TFT display
 * 2 x 400-pin breadboards
+* Jumper wires (M-M)
 * Membrane keypad (4x4 or 4x3)
 * Standard USB to micro USB cable
 
