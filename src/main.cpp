@@ -93,6 +93,16 @@ void handleSleepMode() {
 			}
 		} else if (isFakeSleeping) {
 			screen::wakeup();
+			const std::string lastScreen = screen::getCurrentScreen();
+			if (lastScreen == "home") {
+				screen::showHomeScreen();
+			} else if (lastScreen == "enterAmount") {
+				screen::showEnterAmountScreen(keysToAmount(keysBuffer));
+			} else if (lastScreen == "paymentQRCode") {
+				screen::showPaymentQRCodeScreen(qrcodeData);
+			} else if (lastScreen == "paymentPin") {
+				screen::showPaymentPinScreen(pin);
+			}
 			isFakeSleeping = false;
 		}
 	}
@@ -149,9 +159,9 @@ void runAppLoop() {
 		} else if (keysBuffer.size() < maxNumKeysPressed) {
 			if (keyPressed != "0" || keysBuffer != "") {
 				appendToKeyBuffer(keyPressed);
+				logger::write("keysBuffer = " + keysBuffer);
+				screen::showEnterAmountScreen(keysToAmount(keysBuffer));
 			}
-			logger::write("keysBuffer = " + keysBuffer);
-			screen::showEnterAmountScreen(keysToAmount(keysBuffer));
 		}
 	} else if (currentScreen == "paymentQRCode") {
 		if (keyPressed == "#") {

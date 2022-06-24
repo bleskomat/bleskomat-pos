@@ -130,7 +130,7 @@ Refer to the [ESP32 devkit pinout](#esp32-devkit-pinout) for help identifying th
 
 ### Wiring the Membrane Keypad
 
-Use the table below to connect the ESP32 devkit to the membrane keypad.
+Use the table below to connect the ESP32 devkit to the 4x4 membrane keypad:
 
 | ESP32       | Keypad   |
 |-------------|----------|
@@ -142,6 +142,17 @@ Use the table below to connect the ESP32 devkit to the membrane keypad.
 | GPIO32      | C2       |
 | GPIO15      | C3       |
 | GPIO21      | C4       |
+
+Use the table below to connect the ESP32 devkit to the 4x3 membrane keypad:
+
+| ESP32       | Keypad   |
+|-------------|----------|
+| GPIO13      | R1       |
+| GPIO14      | R2       |
+| GPIO26      | R3       |
+| GPIO25      | C1       |
+| GPIO33      | C2       |
+| GPIO32      | C3       |
 
 Refer to the [ESP32 devkit pinout](#esp32-devkit-pinout) for help identifying the pins on your ESP32.
 
