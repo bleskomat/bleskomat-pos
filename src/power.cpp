@@ -9,8 +9,8 @@ namespace {
 	uint64_t wakeupGPIOMask;
 	unsigned long lastVoltageCheckTime;
 	const unsigned int voltageCheckDelay = 10000;
-	const unsigned int maxBatteryVoltage = 4.2;
-	const unsigned int minBatteryVoltage = 2.5;
+	float batteryMaxVolts;
+	float batteryMinVolts;
 	const unsigned int getBatteryPercentDebounce = 10000;
 	unsigned long lastGetBatteryPercentTime;
 	int lastBatteryPercent = 0;
@@ -56,6 +56,8 @@ namespace power {
 
 	void init() {
 		wakeupGPIOMask = stringListToGPIOMask(config::getString("keypadColPins"));
+		batteryMaxVolts = config::getFloat("batteryMaxVolts");
+		batteryMinVolts = config::getFloat("batteryMinVolts");
 	}
 
 	void loop() {
@@ -78,12 +80,15 @@ namespace power {
 	}
 
 	int getBatteryPercent(const bool &force) {
+		if (!(batteryMaxVolts > 0) || !(batteryMinVolts > 0)) {
+			return 0;
+		}
 		if (!force && lastGetBatteryPercentTime > 0 && millis() - lastGetBatteryPercentTime < getBatteryPercentDebounce) {
 			return lastBatteryPercent;
 		}
 		lastBatteryPercent = std::min(100,
 			std::max(0,
-				100 - (int)std::ceil(100 * ((maxBatteryVoltage - getInputVoltage()) / (maxBatteryVoltage - minBatteryVoltage)))
+				100 - (int)std::ceil(100 * ((batteryMaxVolts - getInputVoltage()) / (batteryMaxVolts - batteryMinVolts)))
 			)
 		);
 		lastGetBatteryPercentTime = millis();

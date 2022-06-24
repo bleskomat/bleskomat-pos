@@ -15,6 +15,8 @@ namespace {
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
 		{ "sleepModeDelay", "30000" },
+		{ "batteryMaxVolts", "4.2" },
+		{ "batteryMinVolts", "2.5" },
 		{ "contrastLevel", "60"},
 		{ "logLevel", "info" },
 		{ "spiffsFormatted", "false" }
@@ -140,6 +142,8 @@ namespace config {
 		// values["locale"] = "en";
 		// values["tftRotation"] = "2";
 		// values["sleepModeDelay"] = "30000";
+		// values["batteryMaxVolts"] = "4.2";
+		// values["batteryMinVolts"] = "2.5";
 		// values["contrastLevel"] = "60";
 		// values["logLevel"] = "info";
 		// values["spiffsFormatted"] = "false";
