@@ -2,10 +2,10 @@
 
 The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository includes the open-source firmware, how-to instructions to build your own hardware device, and scripts to compile the firmware from source.
 
-You can buy the [pre-assembled Bleskomat POS](https://shop.bleskomat.com/product/bleskomat-pos) from the official Bleskomat shop - includes battery, 3D-printed case, and 6 months access to the Bleskomat Platform. Alternatively, you can buy the components to build your own from the official [Lilygo shop](https://aliexpress.com/item/1005003589706292.html).
+You can buy the [pre-assembled Bleskomat POS](https://shop.bleskomat.com/product/bleskomat-pos) from the official Bleskomat shop - includes battery, 3D-printed case, and subscription to the Bleskomat Platform. Alternatively, you can buy the components to build your own from the official [Lilygo shop](https://aliexpress.com/item/1005003589706292.html).
 
 The Bleskomat POS must be paired with a server to facilitate Lightning Network payments on its behalf; see the options below:
-* [Bleskomat Platform](https://platform.bleskomat.com) - non-custodial, requires a monthly subscription
+* [Bleskomat Platform](https://platform.bleskomat.com) - non-custodial, requires a subscription
 * [bleskomat-server](https://github.com/bleskomat/bleskomat-server) - non-custodial, open-source, self-hosted solution
 * [lnbits](https://github.com/lnbits/lnbits-legend) via the LNURLDevice extension - open-source, self-hosted and possible to use custodial instances hosted by others; public instances of lnbits:
 	* [legend.lnbits.com](https://legend.lnbits.com) - unstable, don't leave funds on this instance for very long
