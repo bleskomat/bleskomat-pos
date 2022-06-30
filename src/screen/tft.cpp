@@ -16,19 +16,19 @@ namespace {
 
 	FontList monospaceFonts = {
 		// Ordered from largest (top) to smallest (bottom).
-		Courier_Prime_Code28pt7b,
-		Courier_Prime_Code24pt7b,
-		Courier_Prime_Code22pt7b,
-		Courier_Prime_Code20pt7b,
-		Courier_Prime_Code18pt7b,
-		Courier_Prime_Code16pt7b,
-		Courier_Prime_Code14pt7b,
-		Courier_Prime_Code12pt7b,
-		Courier_Prime_Code10pt7b,
-		Courier_Prime_Code9pt7b,
-		Courier_Prime_Code8pt7b,
-		Courier_Prime_Code7pt7b,
-		Courier_Prime_Code6pt7b
+		Courier_Prime_Code28pt8b,
+		Courier_Prime_Code24pt8b,
+		Courier_Prime_Code22pt8b,
+		Courier_Prime_Code20pt8b,
+		Courier_Prime_Code18pt8b,
+		Courier_Prime_Code16pt8b,
+		Courier_Prime_Code14pt8b,
+		Courier_Prime_Code12pt8b,
+		Courier_Prime_Code10pt8b,
+		Courier_Prime_Code9pt8b,
+		Courier_Prime_Code8pt8b,
+		Courier_Prime_Code7pt8b,
+		Courier_Prime_Code6pt8b
 	};
 
 	FontList brandFonts = {
@@ -277,7 +277,7 @@ namespace screen_tft {
 			} else {
 				color = 0x3041;// red
 			}
-			batteryPercentBBox = renderText(percentText, Courier_Prime_Code10pt7b, color, tft.width(), 0, TR_DATUM);
+			batteryPercentBBox = renderText(percentText, Courier_Prime_Code10pt8b, color, tft.width(), 0, TR_DATUM);
 		}
 	}
 

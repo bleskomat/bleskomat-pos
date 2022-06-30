@@ -199,31 +199,16 @@ Again the device path here could be different for your operating system.
 
 ## Generate Font Header Files
 
-The project already includes several font header files in various sizes. But in the case that you would like to add more or use a different font entirely, you can use the fontconvert tool from the [Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library), included with this project.
-
-Follow the steps below to compile the fontconvert tool:
-```
-cd ./tools/Adafruit-GFX-Library/fontconvert;
-make fontconvert
-```
-Then to generate a new font header file for your own .ttf font:
+This project includes font header files in various sizes. These header files were generated using the fontconvert tool from [Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library). If you would like to use your own font, generate more font sizes of the existing fonts, or to expand the character set; you can use the following command as an example:
 ```bash
-./tools/Adafruit-GFX-Library/fontconvert/fontconvert ./assets/fonts/CheckbookLightning/CheckbookLightning.ttf 30 > ./include/fonts/checkbooklightning_30pt.h
+./scripts/generate-font-header-files.sh "./assets/fonts/Courier Prime Code/Courier Prime Code.ttf" 32-382 6,7,8,9,10,12,14,16,18,20,22,24,28
 ```
-Don't forget to add header guards to the new file - e.g.:
-```c
-#ifndef BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_30PT_H
-#define BLESKOMAT_FONTS_CHECKBOOKLIGHTNING_30PT_H
+* `32-382` - this is the character range (e.g. first character = 32, last = 382). More characters = larger header files.
+* `6,7,8,9,10,12,14,16,18,20,22,24,28` - comma-separated list of font sizes
 
-// ...
-
-#endif
-```
-Then include the new font header file near the others in the `./include/screen/tft.h` file:
-```c
-// ...
-#include "fonts/checkbooklightning_30pt.h"
-// ...
+Note that this requires the fontconvert tool to have been built locally. Use the following command to build it:
+```bash
+make fontconvert
 ```
 
 
@@ -250,11 +235,7 @@ The following is a list of possible configuration options for the Bleskomat POS:
 	* T-Display Keyboard = `"123456789*0#"`
 	* Membrane Keypad (4x3) = `"123456789*0#"`
 	* Membrane Keypad (4x4) = `"123A456B789C*0#D"`
-* `locale` - The locale used when rendering text to the screen. Current supported languages:
-	* "cs" - Czech
-	* "de" - German
-	* "en" - English (default)
-	* "es" - Spanish
+* `locale` - The locale used when rendering text to the screen. See the `./include/locale` directory for the full list of supported languages.
 * `sleepModeDelay` - Number of milliseconds of inactivity to wait before the device will enter power-saving mode.
 * `contrastLevel` - The contrast level between text and background colors. If the ambient light level is low, decreasing the contrast can improve scannability of QR codes.
 * `tftRotation` The orientation of the TFT display. This is useful to allow different positions of the display. The possible rotation values are:

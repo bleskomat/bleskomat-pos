@@ -2,6 +2,7 @@
 #define BLESKOMAT_JSON_RPC_H
 
 #include "config.h"
+#include "i18n.h"
 #include "logger.h"
 #include "main.h"
 #include "spiffs.h"

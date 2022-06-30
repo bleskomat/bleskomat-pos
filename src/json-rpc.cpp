@@ -103,6 +103,7 @@ namespace {
 				docInfo["firmwareCommitHash"] = firmwareCommitHash;
 				docInfo["firmwareVersion"] = firmwareVersion;
 				docInfo["spiffsInitialized"] = spiffs::isInitialized();
+				docInfo["supportedLanguages"] = i18n::getSupportedLocales();
 				docOut["result"] = docInfo;
 				serializeJson(docOut, Serial);
 				Serial.println();
