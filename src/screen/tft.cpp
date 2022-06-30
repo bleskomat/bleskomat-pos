@@ -216,15 +216,15 @@ namespace screen_tft {
 		const std::string logoText = "BLESKOMAT";
 		const GFXfont logoFont = getBestFitFont(logoText, brandFonts);
 		const BoundingBox logoBBox = renderText(logoText, logoFont, textColor, center_x, center_y - 6);
-		const std::string instructionText = i18n::t("home_instruction");
+		const std::string instructionText = i18n::t("press any key");
 		const GFXfont instructionFont = getBestFitFont(instructionText, monospaceFonts, (tft.width() * 10) / 7, logoBBox.h / 2);
 		renderText(instructionText, instructionFont, textColor, center_x, tft.height(), BC_DATUM);
 	}
 
 	void showEnterAmountScreen(const double &amount) {
 		clearScreen();
-		const std::string instructionText1 = i18n::t("enter_amount_instruction1");
-		const std::string instructionText2 = i18n::t("enter_amount_instruction2");
+		const std::string instructionText1 = "* " + i18n::t("reset");
+		const std::string instructionText2 = i18n::t("invoice") + " #";
 		const GFXfont instructionFont = getBestFitFont(instructionText1 + " " + instructionText2, monospaceFonts, tft.width());
 		const BoundingBox instructionText2_bbox = renderText(instructionText2, instructionFont, textColor, tft.width(), tft.height(), BR_DATUM);
 		int16_t instructionText1_y = tft.height();
@@ -251,9 +251,9 @@ namespace screen_tft {
 		clearScreen();
 		const GFXfont pinFont = getBestFitFont(pin, monospaceFonts);
 		const BoundingBox pinBBox = renderText(pin, pinFont, textColor, center_x, center_y - 2);
-		const std::string instructionText1 = i18n::t("payment_pin_instruction1");
+		const std::string instructionText1 = i18n::t("PIN") + ":";
 		const GFXfont instructionFont1 = getBestFitFont(instructionText1, monospaceFonts, tft.width(), pinBBox.h / 2);
-		const std::string instructionText2 = i18n::t("payment_pin_instruction2");
+		const std::string instructionText2 = "* " + i18n::t("reset");
 		const GFXfont instructionFont2 = getBestFitFont(instructionText2, monospaceFonts, tft.width() / 2, pinBBox.h / 2);
 		renderText(instructionText1, instructionFont1, textColor, center_x, 0, TC_DATUM);
 		renderText(instructionText2, instructionFont2, textColor, 0, tft.height(), BL_DATUM);

@@ -2,11 +2,9 @@
 #define BLESKOMAT_LOCALE_CS_H
 
 const i18n::Locale locale_cs = {
-	{ "home_instruction", "stiskněte tlačítko" },
-	{ "enter_amount_instruction1", "* resetovat" },
-	{ "enter_amount_instruction2", "faktura #" },
-	{ "payment_pin_instruction1", "PIN:" },
-	{ "payment_pin_instruction2", "* resetovat" }
+	{ "press any key", "stiskněte tlačítko" },
+	{ "reset", "resetovat" },
+	{ "invoice", "faktura" }
 };
 
 #endif
