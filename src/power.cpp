@@ -23,8 +23,7 @@ namespace {
 		int numReads = 0;
 		do {
 			readsTotal += (analogRead(readPin) * 1.0);
-			delayMicroseconds(10);
-		} while (++numReads < 10);// Reduce noise by doing multiple analog reads.
+		} while (++numReads < 16);// Reduce noise by doing multiple analog reads.
 		const float voltage = ((readsTotal / numReads) / 4095.0f) * 2.0f * 3.3f * (1100.0f / 1000.0f);
 		lastMeasuredInputVoltage = voltage;
 		lastMeasuredVoltageTime = millis();
