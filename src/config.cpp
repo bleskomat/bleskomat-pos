@@ -15,8 +15,8 @@ namespace {
 		{ "locale", "en" },
 		{ "tftRotation", "1" },
 		{ "sleepModeDelay", "30000" },
-		{ "batteryMaxVolts", "4.2" },
-		{ "batteryMinVolts", "2.5" },
+		{ "batteryMaxVolts", "0" },
+		{ "batteryMinVolts", "0" },
 		{ "contrastLevel", "60"},
 		{ "logLevel", "info" },
 		{ "spiffsFormatted", "false" }
