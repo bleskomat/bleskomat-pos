@@ -1,8 +1,12 @@
 # Bleskomat POS
 
-The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository includes the open-source firmware, how-to instructions to build your own hardware device, and scripts to compile the firmware from source.
+The Bleskomat POS is an offline point-of-sale terminal device for the Bitcoin Lightning Network. This repository includes the open-source firmware, instructions how to build your own hardware device, and scripts to compile the firmware from source.
 
-You can buy the [pre-assembled Bleskomat POS](https://shop.bleskomat.com/product/bleskomat-pos) from the official Bleskomat shop - includes battery, 3D-printed case, and subscription to the Bleskomat Platform. Alternatively, you can buy the components to build your own from the official [Lilygo shop](https://aliexpress.com/item/1005003589706292.html).
+Main features include the following:
+* Works offline - the device itself can work without an internet connection
+* Localization to support mutliple languages - see `include/locale` directory for full list of supported languages
+* Deep sleep mode of the ESP32 is used when device is battery-powered
+* JSON-RPC API over serial (USB) allows configuration of device via browser using [BleskomatWebSerial](https://github.com/bleskomat/bleskomat-web-serial)
 
 The Bleskomat POS must be paired with a server to facilitate Lightning Network payments on its behalf; see the options below:
 * [Bleskomat Platform](https://platform.bleskomat.com) - non-custodial, requires a subscription
@@ -10,7 +14,7 @@ The Bleskomat POS must be paired with a server to facilitate Lightning Network p
 * [lnbits](https://github.com/lnbits/lnbits-legend) via the LNURLDevice extension - open-source, self-hosted and possible to use custodial instances hosted by others; public instances of lnbits:
 	* [legend.lnbits.com](https://legend.lnbits.com) - unstable, don't leave funds on this instance for very long
 
-The rest of this document details the hardware and software requirements, how to build the hardware yourself, and instructions for compiling and uploading the firmware from source.
+The rest of this document details the hardware and software requirements, how to build the hardware device, and instructions to compile firmware from source.
 
 * [Requirements](#requirements)
 	* [Hardware Requirements](#hardware-requirements)
@@ -79,7 +83,9 @@ Step-by-step build process for the hardware device.
 
 ### Lilygo T-Display Kit
 
-If using a battery, insert the battery's JST connector into the JST socket on the under-side of the T-Display devkit board. Insert the T-Display devkit board's pins into the keyboard module's sockets - they should line-up perfectly. Solder the pins so that the devkit is solidly connected to the keyboard.
+If using a battery, insert the battery's JST connector into the JST socket on the under-side of the T-Display devkit board. Insert the T-Display devkit board's pins into the keyboard module's sockets - they should line-up perfectly. The USB-C port should be pointing to the right.
+
+![](docs/lilygo-tdisplay-home-screen.jpg)
 
 
 ### ESP32 Devkit
@@ -142,6 +148,8 @@ Use the table below to connect the ESP32 devkit to the 4x4 membrane keypad:
 | GPIO32      | C2       |
 | GPIO15      | C3       |
 | GPIO21      | C4       |
+
+![](docs/esp32devkit-build-membrane-keypad-4x4-with-wires.jpg)
 
 Use the table below to connect the ESP32 devkit to the 4x3 membrane keypad:
 
