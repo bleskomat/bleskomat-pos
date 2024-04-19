@@ -30,6 +30,7 @@ The rest of this document details the hardware and software requirements, how to
 * [Configuring the Device](#configuring-the-device)
 	* [List of Configuration Options](#list-of-configuration-options)
 	* [Browser-Based Configuration Tool](#browser-based-configuration-tool)
+	* [Command-Line Configuration Tool](#command-line-configuration-tool)
 	* [Hard-Coded Configuration](#hard-coded-configuration)
 * [Changelog](#changelog)
 * [Support](#support)
@@ -224,6 +225,7 @@ make fontconvert
 
 It is possible to configure the device via the following methods:
 * [Browser-Based Configuration Tool](#browser-based-configuration-tool)
+* [Command-Line Configuration Tool](#command-line-configuration-tool)
 * [Hard-Coded Configuration](#hard-coded-configuration)
 
 
@@ -264,6 +266,11 @@ The following is a list of possible configuration options for the Bleskomat POS:
 ### Browser-Based Configuration Tool
 
 The Bleskomat Platform provides a [browser-based configuration tool](https://platform.bleskomat.com/serial) to upload pre-built device firmware, view real-time log output, update device configurations, run JSON-RPC serial commands, and more.
+
+
+### Command-Line Configuration Tool
+
+It is also possible to use the [bleskomat-cli](https://github.com/bleskomat/bleskomat-cli) command-line utility to communicate with a Bleskomat hardware device via JSON-RPC over serial API. Please refer to that project's readme for installation and usage information.
 
 
 ### Hard-Coded Configuration
